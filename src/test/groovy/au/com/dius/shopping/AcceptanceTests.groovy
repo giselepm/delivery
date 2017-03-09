@@ -32,6 +32,19 @@ class AcceptanceTests extends Specification {
         "ipd" | "Super iPad"  | 549.99
         "mbp" | "MacBook Pro" | 1399.99
         "atv" | "Apple TV"    | 109.50
+    }
 
+    def "When two #name are scanned, the total is #total"() {
+        when:
+        Product product = new Product(sku, name, price)
+        checkout.scan(product)
+        checkout.scan(product)
+
+        then:
+        total == checkout.total()
+
+        where:
+        sku   | name          | price | total
+        "vga" | "VGA Adapter" | 30.00 | "\$60.00"
     }
 }
