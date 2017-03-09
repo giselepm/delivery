@@ -81,7 +81,7 @@ class AcceptanceTests extends Specification {
         checkout.scan(appleTV)
 
         and:
-        (amount-2).times {
+        (amount - 2).times {
             checkout.scan(iPad)
         }
 
@@ -93,5 +93,27 @@ class AcceptanceTests extends Specification {
         4      | appleTV.price * 2 + iPad.price * 4
         5      | appleTV.price * 2 + 499.99 * 5
         6      | appleTV.price * 2 + 499.99 * 6
+    }
+
+    def "When #macBooks mac books, #vgaAdapters vga adapters and 1 iPad are scanned, the total is \$#total"() {
+        given:
+        macBooks.times {
+            checkout.scan(macBookPro)
+        }
+
+        and:
+        vgaAdapters.times {
+            checkout.scan(vgaAdapter)
+        }
+
+        and:
+        checkout.scan(iPad)
+
+        expect:
+        checkout.total() == "\$$total"
+
+        where:
+        macBooks | vgaAdapters | total
+        1        | 1           | macBookPro.price + iPad.price
     }
 }
