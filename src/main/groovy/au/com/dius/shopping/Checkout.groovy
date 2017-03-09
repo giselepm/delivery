@@ -9,16 +9,26 @@ class Checkout {
     }
 
     String total() {
-        int appleTVCounter = 0
+        List<Product> appleTVItems = []
+        List<Product> iPadItems = []
+        List<Product> otherItems = []
         items.each { Product item ->
             if (item.sku == "atv") {
-                appleTVCounter++
+                appleTVItems << item
+            } else if (item.sku == "ipd") {
+                iPadItems << item
+            } else {
+                otherItems << item
             }
             total += item.price
         }
 
-        if (appleTVCounter >= 3) {
-            total -= ((int)(appleTVCounter) / 3) * 109.50
+        if (appleTVItems && appleTVItems.size() >= 3) {
+            total -= ((int)(appleTVItems.size()) / 3) * 109.50
+        }
+        if (iPadItems && iPadItems.size() > 4) {
+            total -= iPadItems.first().price * iPadItems.size()
+            total += iPadItems.size() * 499.99
         }
 
         "\$${total}"
