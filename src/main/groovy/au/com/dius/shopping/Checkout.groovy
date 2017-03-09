@@ -12,6 +12,6 @@ class Checkout {
     }
 
     void scan(Product product) {
-        total = "\$30.00"
+        total = "\$${product.price}"
     }
 }
