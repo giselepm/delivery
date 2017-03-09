@@ -37,7 +37,7 @@ class Checkout {
         }
 
         if (macBookItems && vgaAdapterItems) {
-            total -= vgaAdapterItems.size() * vgaAdapterItems.price
+            total -= vgaAdapterItems.size() * vgaAdapterItems.first().price
         }
 
         "\$${total}"
