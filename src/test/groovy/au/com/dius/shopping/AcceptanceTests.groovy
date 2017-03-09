@@ -10,6 +10,6 @@ class AcceptanceTests extends Specification {
         Checkout co = new Checkout(pricingRules)
 
         then:
-        "\$0" == co.total()
+        "\$0.00" == co.total()
     }
 }

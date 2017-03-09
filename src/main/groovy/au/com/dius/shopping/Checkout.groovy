@@ -7,6 +7,6 @@ class Checkout {
     }
 
     String total(){
-
+        "\$0.00"
     }
 }
