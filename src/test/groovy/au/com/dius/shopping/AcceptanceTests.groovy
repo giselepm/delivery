@@ -1,7 +1,15 @@
 package au.com.dius.shopping
 
-/**
- * Created by Gisele on 09/03/2017.
- */
-class AcceptanceTests {
+import spock.lang.Specification
+
+class AcceptanceTests extends Specification {
+
+    def "When no product was scanned, the total is \$0"() {
+        when:
+        PricingRules pricingRules = new PricingRules()
+        Checkout co = new Checkout(pricingRules)
+
+        then:
+        "\$0" == co.total()
+    }
 }
