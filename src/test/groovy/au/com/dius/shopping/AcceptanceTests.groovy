@@ -60,4 +60,17 @@ class AcceptanceTests extends Specification {
         then:
         "\$249.00" == checkout.total()
     }
+
+    def "When 6 apple TVs are scanned, the total is the price of only four of them"() {
+        when:
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+
+        then:
+        "\$${appleTV.price*4}" == checkout.total()
+    }
 }
