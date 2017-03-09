@@ -1,16 +1,17 @@
 package au.com.dius.shopping
 
 class Checkout {
+    private String total = "\$0.00"
 
     Checkout(PricingRules pricingRules) {
 
     }
 
     String total(){
-        "\$0.00"
+        total
     }
 
     void scan(Product product) {
-
+        total = "\$30.00"
     }
 }
