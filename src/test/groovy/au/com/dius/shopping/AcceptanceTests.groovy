@@ -90,6 +90,8 @@ class AcceptanceTests extends Specification {
 
         where:
         amount | total
+        4      | appleTV.price * 2 + iPad.price * 4
         5      | appleTV.price * 2 + 499.99 * 5
+        6      | appleTV.price * 2 + 499.99 * 6
     }
 }
