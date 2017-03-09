@@ -1,6 +1,5 @@
 package au.com.dius.shopping
 
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -8,10 +7,19 @@ import spock.lang.Unroll
 class AcceptanceTests extends Specification {
     private PricingRules pricingRules
     Checkout checkout
+    static Product vgaAdapter
+    static Product iPad
+    static Product macBookPro
+    static Product appleTV
+
 
     void setup() {
         pricingRules = new PricingRules()
         checkout = new Checkout(pricingRules)
+        vgaAdapter = new Product("vga", "VGA Adapter", 30.00)
+        iPad = new Product("ipd", "Super iPad", 549.99)
+        macBookPro = new Product("mbp", "MacBook Pro", 1399.99)
+        appleTV = new Product("atv", "Apple TV", 109.50)
     }
 
     def "When no product was scanned, the total is \$0"() {
@@ -19,36 +27,26 @@ class AcceptanceTests extends Specification {
         "\$0.00" == checkout.total()
     }
 
-    def "When one #name is scanned, the total is \$#price"() {
+    def "When one #product.name is scanned, the total is \$#product.price"() {
         when:
-        Product product = new Product(sku, name, price)
         checkout.scan(product)
 
         then:
-        "\$${price}" == checkout.total()
+        "\$${product.price}" == checkout.total()
 
         where:
-        sku   | name          | price
-        "vga" | "VGA Adapter" | 30.00
-        "ipd" | "Super iPad"  | 549.99
-        "mbp" | "MacBook Pro" | 1399.99
-        "atv" | "Apple TV"    | 109.50
+        product << [vgaAdapter, iPad, macBookPro, appleTV]
     }
-    
-    def "When two #name are scanned, the total is #total"() {
+
+    def "When two #product.name are scanned, the total is 2 x #product.price"() {
         when:
-        Product product = new Product(sku, name, price)
         checkout.scan(product)
         checkout.scan(product)
 
         then:
-        total == checkout.total()
+        "\$${product.price*2}" == checkout.total()
 
         where:
-        sku   | name          | price   | total
-        "vga" | "VGA Adapter" | 30.00   | "\$${30.00*2}"
-        "ipd" | "Super iPad"  | 549.99  | "\$${549.99*2}"
-        "mbp" | "MacBook Pro" | 1399.99 | "\$${1399.99*2}"
-        "atv" | "Apple TV"    | 109.50  | "\$${109.50*2}"
+        product << [vgaAdapter, iPad, macBookPro, appleTV]
     }
 }
