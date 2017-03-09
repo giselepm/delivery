@@ -24,4 +24,13 @@ class AcceptanceTests extends Specification {
         then:
         "\$30.00" == checkout.total()
     }
+
+    def "When one Super iPad is scanned, the total is \$549.00"() {
+        when:
+        Product ipad = new Product("ipd", "Super iPad", 549.00)
+        checkout.scan(ipad)
+
+        then:
+        "\$549.00" == checkout.total()
+    }
 }
