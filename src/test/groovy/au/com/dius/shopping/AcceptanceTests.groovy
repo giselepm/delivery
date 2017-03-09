@@ -1,7 +1,9 @@
 package au.com.dius.shopping
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
+@Unroll
 class AcceptanceTests extends Specification {
     private PricingRules pricingRules
     Checkout checkout
@@ -16,21 +18,20 @@ class AcceptanceTests extends Specification {
         "\$0.00" == checkout.total()
     }
 
-    def "When one VGA adapter is scanned, the total is \$30.00"() {
+    def "When one #name is scanned, the total is \$#price"() {
         when:
-        Product vgaAdapter = new Product("vga", "VGA Adapter", 30.00)
-        checkout.scan(vgaAdapter)
+        Product product = new Product(sku, name, price)
+        checkout.scan(product)
 
         then:
-        "\$30.00" == checkout.total()
-    }
+        "\$${price}" == checkout.total()
 
-    def "When one Super iPad is scanned, the total is \$549.00"() {
-        when:
-        Product ipad = new Product("ipd", "Super iPad", 549.00)
-        checkout.scan(ipad)
+        where:
+        sku   | name          | price
+        "vga" | "VGA Adapter" | 30.00
+        "ipd" | "Super iPad"  | 549.99
+        "mbp" | "MacBook Pro" | 1399.99
+        "atv" | "Apple TV"    | 109.50
 
-        then:
-        "\$549.00" == checkout.total()
     }
 }
