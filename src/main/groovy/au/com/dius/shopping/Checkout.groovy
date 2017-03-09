@@ -18,7 +18,7 @@ class Checkout {
         }
 
         if (appleTVCounter >= 3) {
-            total -= 109.50
+            total -= ((int)(appleTVCounter) / 3) * 109.50
         }
 
         "\$${total}"

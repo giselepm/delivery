@@ -44,7 +44,7 @@ class AcceptanceTests extends Specification {
         checkout.scan(product)
 
         then:
-        "\$${product.price*2}" == checkout.total()
+        "\$${product.price * 2}" == checkout.total()
 
         where:
         product << [vgaAdapter, iPad, macBookPro, appleTV]
@@ -60,7 +60,7 @@ class AcceptanceTests extends Specification {
         then:
         "\$249.00" == checkout.total()
     }
-
+    
     def "When 6 apple TVs are scanned, the total is the price of only four of them"() {
         when:
         checkout.scan(appleTV)
@@ -71,6 +71,6 @@ class AcceptanceTests extends Specification {
         checkout.scan(appleTV)
 
         then:
-        "\$${appleTV.price*4}" == checkout.total()
+        "\$${appleTV.price * 4}" == checkout.total()
     }
 }
