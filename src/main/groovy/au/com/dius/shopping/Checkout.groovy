@@ -9,4 +9,8 @@ class Checkout {
     String total(){
         "\$0.00"
     }
+
+    void scan(Product product) {
+
+    }
 }
