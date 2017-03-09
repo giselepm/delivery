@@ -118,5 +118,9 @@ class AcceptanceTests extends Specification {
         2        | 2           | macBookPro.price * 2 + iPad.price
         2        | 1           | macBookPro.price * 2 + iPad.price
         1        | 2           | macBookPro.price + vgaAdapter.price + iPad.price
+        3        | 5           | macBookPro.price * 3 + vgaAdapter.price * 2 + iPad.price
+        3        | 0           | macBookPro.price * 3 + iPad.price
+        0        | 3           | vgaAdapter.price * 3 + iPad.price
+        6        | 1           | macBookPro.price * 6 + iPad.price
     }
 }
