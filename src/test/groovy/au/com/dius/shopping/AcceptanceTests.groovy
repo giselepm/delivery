@@ -49,4 +49,15 @@ class AcceptanceTests extends Specification {
         where:
         product << [vgaAdapter, iPad, macBookPro, appleTV]
     }
+
+    def "When 3 apple TVs and 1 vga adapter are scanned, the total is \$249.00"() {
+        when:
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(appleTV)
+        checkout.scan(vgaAdapter)
+
+        then:
+        "\$249.00" == checkout.total()
+    }
 }
