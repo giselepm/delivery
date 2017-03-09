@@ -1,5 +1,6 @@
 package au.com.dius.shopping
 
+import spock.lang.IgnoreRest
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -33,7 +34,7 @@ class AcceptanceTests extends Specification {
         "mbp" | "MacBook Pro" | 1399.99
         "atv" | "Apple TV"    | 109.50
     }
-
+    
     def "When two #name are scanned, the total is #total"() {
         when:
         Product product = new Product(sku, name, price)
@@ -44,7 +45,10 @@ class AcceptanceTests extends Specification {
         total == checkout.total()
 
         where:
-        sku   | name          | price | total
-        "vga" | "VGA Adapter" | 30.00 | "\$60.00"
+        sku   | name          | price   | total
+        "vga" | "VGA Adapter" | 30.00   | "\$${30.00*2}"
+        "ipd" | "Super iPad"  | 549.99  | "\$${549.99*2}"
+        "mbp" | "MacBook Pro" | 1399.99 | "\$${1399.99*2}"
+        "atv" | "Apple TV"    | 109.50  | "\$${109.50*2}"
     }
 }
