@@ -1,34 +1,20 @@
 package au.com.dius.shopping
 
+import au.com.dius.shopping.pricingRules.AbstractPricingRule
+import au.com.dius.shopping.pricingRules.FreeVGAAdapterWithMacBookProPricingRule
+import au.com.dius.shopping.pricingRules.SuperIPadBulkDiscountPricingRule
+import au.com.dius.shopping.pricingRules.ThreeForTwoAppleTVsPricingRule
+
 class PricingRules {
+    List<AbstractPricingRule> pricingRules = []
+
+    PricingRules() {
+        pricingRules << new FreeVGAAdapterWithMacBookProPricingRule()
+        pricingRules << new SuperIPadBulkDiscountPricingRule()
+        pricingRules << new ThreeForTwoAppleTVsPricingRule()
+    }
+
     void applyRules(List<Item> items) {
-        List<Item> appleTVItems = items.findAll { it.product.sku == "atv" }
-        List<Item> iPadItems = items.findAll { it.product.sku == "ipd" }
-        List<Item> macBookItems = items.findAll { it.product.sku == "mbp" }
-        List<Item> vgaAdapterItems = items.findAll { it.product.sku == "vga" }
-
-        if (appleTVItems && appleTVItems.size() >= 3) {
-            int freeAppleTVsAmount = (int)(appleTVItems.size()) / 3
-            appleTVItems.eachWithIndex{ Item item, int i ->
-                if (i < freeAppleTVsAmount) {
-                    item.price = 0.00
-                }
-            }
-        }
-
-        if (iPadItems && iPadItems.size() > 4) {
-            iPadItems.each{ Item item ->
-                item.price = 499.99
-            }
-        }
-
-        if (macBookItems && vgaAdapterItems) {
-            int freeVgaAdaptersAmount = [macBookItems.size(), vgaAdapterItems.size()].min()
-            vgaAdapterItems.eachWithIndex{ Item item, int i ->
-                if (i < freeVgaAdaptersAmount) {
-                    item.price = 0.00
-                }
-            }
-        }
+        pricingRules.each { it.applyRule(items) }
     }
 }
