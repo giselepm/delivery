@@ -1,21 +1,21 @@
 package au.com.dius.shopping
 
 class PricingRules {
-    BigDecimal calculateTotalPrice(List<Product> items) {
+    BigDecimal calculateTotalPrice(List<Item> items) {
         BigDecimal total = 0.00
         List<Product> appleTVItems = []
         List<Product> iPadItems = []
         List<Product> macBookItems = []
         List<Product> vgaAdapterItems = []
 
-        items.each { Product item ->
-            if (item.sku == "atv") {
+        items.each { Item item ->
+            if (item.product.sku == "atv") {
                 appleTVItems << item
-            } else if (item.sku == "ipd") {
+            } else if (item.product.sku == "ipd") {
                 iPadItems << item
-            } else if (item.sku == "mbp") {
+            } else if (item.product.sku == "mbp") {
                 macBookItems << item
-            } else if (item.sku == "vga") {
+            } else if (item.product.sku == "vga") {
                 vgaAdapterItems << item
             }
             total += item.price

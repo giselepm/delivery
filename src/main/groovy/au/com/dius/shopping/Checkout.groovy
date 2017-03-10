@@ -1,7 +1,7 @@
 package au.com.dius.shopping
 
 class Checkout {
-    private List<Product> items = []
+    private List<Item> items = []
     private PricingRules pricingRules
 
     Checkout(PricingRules pricingRules) {
@@ -13,6 +13,6 @@ class Checkout {
     }
 
     void scan(Product product) {
-        items << product
+        items << new Item(product.price, product)
     }
 }
