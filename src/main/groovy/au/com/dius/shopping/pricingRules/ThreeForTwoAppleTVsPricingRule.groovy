@@ -9,7 +9,7 @@ class ThreeForTwoAppleTVsPricingRule extends AbstractPricingRule {
     }
 
     void applyRule(List<Item> items) {
-        List<Item> appleTVItems = items.findAll { it.product.sku == "atv" }
+        List<Item> appleTVItems = items.findAll { it.product.isAppleTV() }
 
         if (appleTVItems && appleTVItems.size() >= 3) {
             int freeAppleTVsAmount = (int)(appleTVItems.size()) / 3

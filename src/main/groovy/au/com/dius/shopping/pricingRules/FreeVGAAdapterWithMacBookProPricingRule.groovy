@@ -9,8 +9,8 @@ class FreeVGAAdapterWithMacBookProPricingRule extends AbstractPricingRule  {
     }
 
     void applyRule(List<Item> items) {
-        List<Item> macBookItems = items.findAll { it.product.sku == "mbp" }
-        List<Item> vgaAdapterItems = items.findAll { it.product.sku == "vga" }
+        List<Item> macBookItems = items.findAll { it.product.isMacBookPro() }
+        List<Item> vgaAdapterItems = items.findAll { it.product.isVGAAdapter() }
 
         if (macBookItems && vgaAdapterItems) {
             int freeVgaAdaptersAmount = [macBookItems.size(), vgaAdapterItems.size()].min()

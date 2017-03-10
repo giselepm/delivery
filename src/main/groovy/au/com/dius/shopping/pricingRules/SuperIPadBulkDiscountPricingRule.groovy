@@ -9,7 +9,7 @@ class SuperIPadBulkDiscountPricingRule extends AbstractPricingRule  {
     }
 
     void applyRule(List<Item> items) {
-        List<Item> iPadItems = items.findAll { it.product.sku == "ipd" }
+        List<Item> iPadItems = items.findAll { it.product.isSuperIpad() }
 
         if (iPadItems && iPadItems.size() > 4) {
             iPadItems.each{ Item item ->
