@@ -9,7 +9,9 @@ class Checkout {
     }
 
     String total() {
-        "\$${pricingRules.calculateTotalPrice(items)}"
+        pricingRules.applyRules(items)
+
+        "\$${items.price.sum() ?: 0.00}"
     }
 
     void scan(Product product) {

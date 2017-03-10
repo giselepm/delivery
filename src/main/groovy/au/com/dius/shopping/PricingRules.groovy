@@ -1,39 +1,34 @@
 package au.com.dius.shopping
 
 class PricingRules {
-    BigDecimal calculateTotalPrice(List<Item> items) {
-        BigDecimal total = 0.00
-        List<Product> appleTVItems = []
-        List<Product> iPadItems = []
-        List<Product> macBookItems = []
-        List<Product> vgaAdapterItems = []
-
-        items.each { Item item ->
-            if (item.product.sku == "atv") {
-                appleTVItems << item
-            } else if (item.product.sku == "ipd") {
-                iPadItems << item
-            } else if (item.product.sku == "mbp") {
-                macBookItems << item
-            } else if (item.product.sku == "vga") {
-                vgaAdapterItems << item
-            }
-            total += item.price
-        }
+    void applyRules(List<Item> items) {
+        List<Item> appleTVItems = items.findAll { it.product.sku == "atv" }
+        List<Item> iPadItems = items.findAll { it.product.sku == "ipd" }
+        List<Item> macBookItems = items.findAll { it.product.sku == "mbp" }
+        List<Item> vgaAdapterItems = items.findAll { it.product.sku == "vga" }
 
         if (appleTVItems && appleTVItems.size() >= 3) {
-            total -= ((int) (appleTVItems.size()) / 3) * 109.50
+            int freeAppleTVsAmount = (int)(appleTVItems.size()) / 3
+            appleTVItems.eachWithIndex{ Item item, int i ->
+                if (i < freeAppleTVsAmount) {
+                    item.price = 0.00
+                }
+            }
         }
 
         if (iPadItems && iPadItems.size() > 4) {
-            total -= iPadItems.first().price * iPadItems.size()
-            total += iPadItems.size() * 499.99
+            iPadItems.each{ Item item ->
+                item.price = 499.99
+            }
         }
 
         if (macBookItems && vgaAdapterItems) {
-            total -= [macBookItems.size(), vgaAdapterItems.size()].min() * vgaAdapterItems.first().price
+            int freeVgaAdaptersAmount = [macBookItems.size(), vgaAdapterItems.size()].min()
+            vgaAdapterItems.eachWithIndex{ Item item, int i ->
+                if (i < freeVgaAdaptersAmount) {
+                    item.price = 0.00
+                }
+            }
         }
-
-        return total
     }
 }

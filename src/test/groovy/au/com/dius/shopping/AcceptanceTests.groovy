@@ -12,7 +12,6 @@ class AcceptanceTests extends Specification {
     static Product macBookPro
     static Product appleTV
 
-
     void setup() {
         pricingRules = new PricingRules()
         checkout = new Checkout(pricingRules)
