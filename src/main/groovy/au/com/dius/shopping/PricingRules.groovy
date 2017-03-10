@@ -15,6 +15,6 @@ class PricingRules {
     }
 
     void applyRules(List<Item> items) {
-        pricingRules.each { it.applyRule(items) }
+        pricingRules.findAll { it.isValid() }.each { it.applyRule(items) }
     }
 }

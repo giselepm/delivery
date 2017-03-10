@@ -3,6 +3,11 @@ package au.com.dius.shopping.pricingRules
 import au.com.dius.shopping.Item
 
 class ThreeForTwoAppleTVsPricingRule extends AbstractPricingRule {
+
+    boolean isValid() {
+        true
+    }
+
     void applyRule(List<Item> items) {
         List<Item> appleTVItems = items.findAll { it.product.sku == "atv" }
 
