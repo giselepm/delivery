@@ -28,14 +28,11 @@ class CheckoutSpec extends Specification {
     }
 
     def "when no item was scanned, total should return \$0.00"() {
-        given:
-        checkout.scan(productAbc)
-
         when:
         String total = checkout.total()
 
         then:
-        total == "\$${productAbc.price}"
+        total == "\$0.00"
     }
 
     def "when only one item was scanned, total should return its price formatted"() {
