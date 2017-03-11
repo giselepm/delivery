@@ -9,10 +9,38 @@ class FreeVGAAdapterWithMacBookProPricingRuleSpec extends Specification {
     Product vga
     Product macBook
 
+    Item vgaItem1
+    Item vgaItem2
+    Item vgaItem3
+    Item vgaItem4
+    Item macBookItem1
+    Item macBookItem2
+
     def setup() {
         rule = new FreeVGAAdapterWithMacBookProPricingRule()
-        vga = new Product("vga", "VGA Adapter", 10.00)
-        macBook = new Product("mbp", "MacBook Pro", 30.00)
+
+        vga = Mock(Product)
+        macBook = Mock(Product)
+
+        vga.isMacBookPro() >> false
+        vga.isVGAAdapter() >> true
+        macBook.isMacBookPro() >> true
+        macBook.isVGAAdapter() >> false
+
+        vgaItem1 = Mock(Item)
+        vgaItem2 = Mock(Item)
+        vgaItem3 = Mock(Item)
+        vgaItem4 = Mock(Item)
+        macBookItem1 = Mock(Item)
+        macBookItem2 = Mock(Item)
+
+        vgaItem1.getProduct() >> vga
+        vgaItem2.getProduct() >> vga
+        vgaItem3.getProduct() >> vga
+        vgaItem4.getProduct() >> vga
+        macBookItem1.getProduct() >> macBook
+        macBookItem2.getProduct() >> macBook
+
     }
 
     def "isValid should return true"() {
@@ -22,39 +50,44 @@ class FreeVGAAdapterWithMacBookProPricingRuleSpec extends Specification {
 
     def "applyRule should not change the price of the vgaAdapter item if there is no macBook in the list"() {
         given:
-        List items = [new Item(vga), new Item(vga)]
+        List items = [vgaItem1, vgaItem2]
 
         when:
         rule.applyRule(items)
 
         then:
-        items.price == [10.00, 10.00]
+        0 * vgaItem1.bundleForFree()
+        0 * vgaItem2.bundleForFree()
     }
 
     def "applyRule should change the price of only one vgaAdapter item if there is one macBook in the list"() {
         given:
-        List items = [new Item(vga), new Item(vga), new Item(macBook)]
+        List items = [vgaItem1, vgaItem2, macBookItem1]
 
         when:
         rule.applyRule(items)
 
         then:
-        items.findAll { it.product.sku == "vga" }.price.containsAll([0.00, 10.00])
-        items.find { it.product.sku == "mbp" }.price == 30.00
+        1 * vgaItem1.bundleForFree()
+        0 * vgaItem2.bundleForFree()
+        0 * macBookItem1.bundleForFree()
     }
 
     def "applyRule should change the price of only two vgaAdapter item if there is two macBook in the list"() {
         given:
-        List items = [new Item(vga), new Item(vga),
-                      new Item(macBook), new Item(macBook),
-                      new Item(vga), new Item(vga)]
+        List items = [vgaItem1, vgaItem2,
+                     macBookItem1, macBookItem2,
+                      vgaItem3, vgaItem4]
 
         when:
         rule.applyRule(items)
 
         then:
-        items.findAll { it.product.sku == "vga" && it.price == 0.00 }.size() == 2
-        items.findAll { it.product.sku == "vga" && it.price == 10.00 }.size() == 2
-        items.findAll { it.product.sku == "mbp" && it.price == 30.00 }.size() == 2
+        1 * vgaItem1.bundleForFree()
+        1 * vgaItem2.bundleForFree()
+        0 * vgaItem3.bundleForFree()
+        0 * vgaItem4.bundleForFree()
+        0 * macBookItem1.bundleForFree()
+        0 * macBookItem2.bundleForFree()
     }
 }

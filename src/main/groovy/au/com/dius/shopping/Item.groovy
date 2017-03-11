@@ -1,11 +1,11 @@
 package au.com.dius.shopping
 
 class Item {
-    private BigDecimal price
-    private Product product
+    BigDecimal price
+    Product product
 
     Item(Product product) {
-        price = product.price
+        this.price = product.price
         this.product = product
     }
 
