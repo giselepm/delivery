@@ -3,7 +3,7 @@ package au.com.dius.shopping
 class Product {
     private String sku
     private String name
-    private BigDecimal price
+    BigDecimal price
 
     Product(String sku, String name, BigDecimal price) {
         this.sku = sku
