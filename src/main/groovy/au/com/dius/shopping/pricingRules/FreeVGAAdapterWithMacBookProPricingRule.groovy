@@ -16,7 +16,7 @@ class FreeVGAAdapterWithMacBookProPricingRule implements PricingRule  {
             int totalFreeVgaAdapters = [macBookItems.size(), vgaAdapterItems.size()].min()
             vgaAdapterItems.eachWithIndex{ Item item, int i ->
                 if (i < totalFreeVgaAdapters) {
-                    item.price = 0.00
+                    item.bundleForFree()
                 }
             }
         }

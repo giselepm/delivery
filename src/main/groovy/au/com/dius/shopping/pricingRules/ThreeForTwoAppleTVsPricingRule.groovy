@@ -5,7 +5,6 @@ import au.com.dius.shopping.Item
 class ThreeForTwoAppleTVsPricingRule implements PricingRule {
 
     private static final int TOTAL_APPLE_TVS_FOR_DISCOUNT = 3
-    private static final BigDecimal DISCOUNT_PRICE = 0.00
 
     boolean isValid() {
         true
@@ -15,10 +14,10 @@ class ThreeForTwoAppleTVsPricingRule implements PricingRule {
         List<Item> appleTVItems = items.findAll { it.product.isAppleTV() }
 
         if (appleTVItems && appleTVItems.size() >= TOTAL_APPLE_TVS_FOR_DISCOUNT) {
-            int freeAppleTVsAmount = (int)(appleTVItems.size()) / TOTAL_APPLE_TVS_FOR_DISCOUNT
+            int freeAppleTVsTotal = (int)(appleTVItems.size()) / TOTAL_APPLE_TVS_FOR_DISCOUNT
             appleTVItems.eachWithIndex{ Item item, int i ->
-                if (i < freeAppleTVsAmount) {
-                    item.price = DISCOUNT_PRICE
+                if (i < freeAppleTVsTotal) {
+                    item.bundleForFree()
                 }
             }
         }

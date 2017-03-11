@@ -49,37 +49,43 @@ class AcceptanceTests extends Specification {
         product << [vgaAdapter, iPad, macBookPro, appleTV]
     }
 
-    def "When #amount apple TVs and 1 vga adapter are scanned, the total is \$#total"() {
+    def "When #appleTVs apple TVs and 1 vga adapter are scanned, the total is \$#total"() {
         given:
-        amount.times {
+        appleTVs.times {
             checkout.scan(appleTV)
         }
+
+        and:
         checkout.scan(vgaAdapter)
 
         expect:
         checkout.total() == "\$$total"
 
         where:
-        amount | total
-        3      | appleTV.price * 2 + vgaAdapter.price
-        4      | appleTV.price * 3 + vgaAdapter.price
-        5      | appleTV.price * 4 + vgaAdapter.price
-        6      | appleTV.price * 4 + vgaAdapter.price
-        7      | appleTV.price * 5 + vgaAdapter.price
-        8      | appleTV.price * 6 + vgaAdapter.price
-        9      | appleTV.price * 6 + vgaAdapter.price
+        appleTVs | total
+        3        | appleTV.price * 2 + vgaAdapter.price
+        4        | appleTV.price * 3 + vgaAdapter.price
+        5        | appleTV.price * 4 + vgaAdapter.price
+        6        | appleTV.price * 4 + vgaAdapter.price
+        7        | appleTV.price * 5 + vgaAdapter.price
+        8        | appleTV.price * 6 + vgaAdapter.price
+        9        | appleTV.price * 6 + vgaAdapter.price
     }
 
-    def "When #amount super iPads and 2 apple TVs are scanned, the total is \$#total"() {
+    def "When #ipads super iPads and 2 apple TVs are scanned, the total is \$#total"() {
         given:
-        checkout.scan(appleTV)
-        2.times {
-            checkout.scan(iPad)
-        }
         checkout.scan(appleTV)
 
         and:
-        (amount - 2).times {
+        2.times {
+            checkout.scan(iPad)
+        }
+
+        and:
+        checkout.scan(appleTV)
+
+        and:
+        (ipads - 2).times {
             checkout.scan(iPad)
         }
 
@@ -87,10 +93,10 @@ class AcceptanceTests extends Specification {
         checkout.total() == "\$$total"
 
         where:
-        amount | total
-        4      | appleTV.price * 2 + iPad.price * 4
-        5      | appleTV.price * 2 + 499.99 * 5
-        6      | appleTV.price * 2 + 499.99 * 6
+        ipads | total
+        4     | appleTV.price * 2 + iPad.price * 4
+        5     | appleTV.price * 2 + 499.99 * 5
+        6     | appleTV.price * 2 + 499.99 * 6
     }
 
     def "When #macBooks mac books, #vgaAdapters vga adapters and 1 iPad are scanned, the total is \$#total"() {
