@@ -2,7 +2,7 @@ package au.com.dius.shopping.pricingRules
 
 import au.com.dius.shopping.Item
 
-class FreeVGAAdapterWithMacBookProPricingRule extends AbstractPricingRule  {
+class FreeVGAAdapterWithMacBookProPricingRule implements PricingRule  {
 
     boolean isValid() {
         true
@@ -13,9 +13,9 @@ class FreeVGAAdapterWithMacBookProPricingRule extends AbstractPricingRule  {
         List<Item> vgaAdapterItems = items.findAll { it.product.isVGAAdapter() }
 
         if (macBookItems && vgaAdapterItems) {
-            int freeVgaAdaptersAmount = [macBookItems.size(), vgaAdapterItems.size()].min()
+            int totalFreeVgaAdapters = [macBookItems.size(), vgaAdapterItems.size()].min()
             vgaAdapterItems.eachWithIndex{ Item item, int i ->
-                if (i < freeVgaAdaptersAmount) {
+                if (i < totalFreeVgaAdapters) {
                     item.price = 0.00
                 }
             }

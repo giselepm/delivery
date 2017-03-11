@@ -1,9 +1,7 @@
 package au.com.dius.shopping
 
 import spock.lang.Specification
-import spock.lang.Unroll
 
-@Unroll
 class CheckoutSpec extends Specification {
     Checkout checkout
     Product productAbc
@@ -17,7 +15,7 @@ class CheckoutSpec extends Specification {
         productXyz = new Product("abc", "XYZ", 300.50)
     }
 
-    def "scan should add an item with the same price of the product and linked to it in the items list"() {
+    def "scan should add an item with the same price of the product and link it in the items list"() {
         when:
         checkout.scan(productAbc)
 
