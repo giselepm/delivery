@@ -14,8 +14,8 @@ class ThreeForTwoAppleTVsPricingRule implements PricingRule {
         List<Item> appleTVItems = items.findAll { it.product.isAppleTV() }
 
         if (appleTVItems && appleTVItems.size() >= TOTAL_APPLE_TVS_FOR_DISCOUNT) {
-            int freeAppleTVsTotal = (int)(appleTVItems.size()) / TOTAL_APPLE_TVS_FOR_DISCOUNT
-            appleTVItems.eachWithIndex{ Item item, int i ->
+            int freeAppleTVsTotal = (int) (appleTVItems.size()) / TOTAL_APPLE_TVS_FOR_DISCOUNT
+            appleTVItems.eachWithIndex { Item item, int i ->
                 if (i < freeAppleTVsTotal) {
                     item.bundleForFree()
                 }

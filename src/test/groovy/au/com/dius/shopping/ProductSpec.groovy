@@ -18,6 +18,7 @@ class ProductSpec extends Specification {
         "ipd" | false
         "abc" | false
     }
+
     def "isSuperIpad should return #result when the sku is #sku"() {
         given:
         Product product = new Product(sku, "aName", 10.00)
@@ -31,6 +32,7 @@ class ProductSpec extends Specification {
         "ipd" | true
         "abc" | false
     }
+
     def "isMacBookPro should return #result when the sku is #sku"() {
         given:
         Product product = new Product(sku, "aName", 10.00)
@@ -44,6 +46,7 @@ class ProductSpec extends Specification {
         "ipd" | false
         "abc" | false
     }
+
     def "isVGAAdapter should return #result when the sku is #sku"() {
         given:
         Product product = new Product(sku, "aName", 10.00)
