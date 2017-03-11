@@ -15,6 +15,6 @@ class Checkout {
     }
 
     void scan(Product product) {
-        items << new Item(product.price, product)
+        items << new Item(product)
     }
 }

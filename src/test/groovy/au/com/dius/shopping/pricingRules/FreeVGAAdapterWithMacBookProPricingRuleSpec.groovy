@@ -22,7 +22,7 @@ class FreeVGAAdapterWithMacBookProPricingRuleSpec extends Specification {
 
     def "applyRule should not change the price of the vgaAdapter item if there is no macBook in the list"() {
         given:
-        List items = [new Item(10.00, vga), new Item(10.00, vga)]
+        List items = [new Item(vga), new Item(vga)]
 
         when:
         rule.applyRule(items)
@@ -33,7 +33,7 @@ class FreeVGAAdapterWithMacBookProPricingRuleSpec extends Specification {
 
     def "applyRule should change the price of only one vgaAdapter item if there is one macBook in the list"() {
         given:
-        List items = [new Item(10.00, vga), new Item(10.00, vga), new Item(30.00, macBook)]
+        List items = [new Item(vga), new Item(vga), new Item(macBook)]
 
         when:
         rule.applyRule(items)
@@ -45,9 +45,9 @@ class FreeVGAAdapterWithMacBookProPricingRuleSpec extends Specification {
 
     def "applyRule should change the price of only two vgaAdapter item if there is two macBook in the list"() {
         given:
-        List items = [new Item(10.00, vga), new Item(10.00, vga),
-                      new Item(30.00, macBook), new Item(30.00, macBook),
-                      new Item(10.00, vga), new Item(10.00, vga)]
+        List items = [new Item(vga), new Item(vga),
+                      new Item(macBook), new Item(macBook),
+                      new Item(vga), new Item(vga)]
 
         when:
         rule.applyRule(items)
