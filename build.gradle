@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 
 jar {
-    baseName = 'shopping'
+    baseName = 'delivery'
     version = '0.0.1-SNAPSHOT'
 }
 

@@ -1,15 +1,15 @@
-package au.com.dius.shopping
+package de.com.allpago.delivery
 
 import spock.lang.Specification
 
-class CheckoutSpec extends Specification {
-    Checkout checkout
+class BestRouteSpec extends Specification {
+    BestRoute checkout
     Product productAbc
     Product productFgh
     Product productXyz
 
     def setup() {
-        checkout = new Checkout(new PricingRules())
+        checkout = new BestRoute(new PricingRules())
         productAbc = new Product("abc", "ABC", 10.00)
         productFgh = new Product("fgh", "FGH", 35.99)
         productXyz = new Product("abc", "XYZ", 300.50)
