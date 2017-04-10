@@ -7,7 +7,8 @@ class Dijkstra {
     private Set<Person> settledPeople
     private Set<Person> unSettledPeople
     private Map<Person, Person> predecessors
-    private Map<Person, Integer> hard
+    private Map<Person, Integer> smallestHards
+
 
     Dijkstra(Graph graph) {
         this.people = new ArrayList<Person>(graph.people)
@@ -15,62 +16,61 @@ class Dijkstra {
     }
 
     public void execute(Person source) {
-        settledPeople = new HashSet<Person>()
-        unSettledPeople = new HashSet<Person>()
-        hard = new HashMap<Person, Integer>()
-        predecessors = new HashMap<Person, Person>()
+        settledPeople = []
+        unSettledPeople = []
+        smallestHards = [:]
+        predecessors = [:]
 
-        hard.put(source, 0)
-        unSettledPeople.add(source)
+        people.forEach { smallestHards.put(it, Integer.MAX_VALUE) }
+        smallestHards.put(source, 0)
+
+        findMinimalHard(source)
 
         while (unSettledPeople.size() > 0) {
-            Person person = getMinimum(unSettledPeople)
+            Person person = getPersonWithMinimumHard(unSettledPeople)
             settledPeople.add(person)
             unSettledPeople.remove(person)
             findMinimalHard(person)
         }
     }
 
-    private void findMinimalHard(Person node) {
-        List<Person> adjacentNodes = getNeighbors(node)
-        adjacentNodes.forEach { Person target ->
-            if (getSmallestHard(target) > (getSmallestHard(node) + getHard(node, target))) {
+    private void findMinimalHard(Person person) {
+        List<Person> adjacentPeople = getNeighbors(person)
 
-                hard.put(target, getSmallestHard(node) + getHard(node, target))
-                predecessors.put(target, node)
+        adjacentPeople.findAll {
+            smallestHards.get(it) > (smallestHards.get(person) + getRouteHard(person, it))
+        }.forEach { Person target ->
+                smallestHards.put(target, smallestHards.get(person) + getRouteHard(person, target))
+                predecessors.put(target, person)
                 unSettledPeople.add(target)
-            }
         }
 
     }
 
-    private int getHard(Person node, Person target) {
-        for (Route route : routes) {
-            if (route.source == node && route.destination == target) {
-                return route.hard
-            }
-        }
+    private int getRouteHard(Person person, Person target) {
+        return routes.find { it.source == person && it.destination == target}?.hard
 
-        throw new RuntimeException("Should not happen")
     }
 
-    private List<Person> getNeighbors(Person node) {
+    private List<Person> getNeighbors(Person person) {
         List<Person> neighbors = new ArrayList<Person>()
-        routes.forEach { Route route ->
-            if (route.source == node && !isSettled(route.destination)) {
-                neighbors.add(route.destination)
-            }
+
+        routes.findAll {
+            it.source == person && !isSettled(it.destination)
+        }.forEach {
+            neighbors.add(it.destination)
         }
+
         return neighbors
     }
 
-    private Person getMinimum(Set<Person> people) {
+    private Person getPersonWithMinimumHard(Set<Person> people) {
         Person minimum = null
         people.forEach { Person person ->
             if (!minimum) {
                 minimum = person
             } else {
-                if (getSmallestHard(person) < getSmallestHard(minimum)) {
+                if (smallestHards.get(person) < smallestHards.get(minimum)) {
                     minimum = person
                 }
             }
@@ -82,18 +82,6 @@ class Dijkstra {
         return settledPeople.contains(Person)
     }
 
-    private int getSmallestHard(Person destination) {
-        Integer d = hard.get(destination)
-        if (d == null) {
-            return Integer.MAX_VALUE;
-        }
-
-        return d;
-    }
-
-    /*
-     * This method returns the best route from the source to the selected target and NULL if no path exists
-     */
     public LinkedList<Person> getBestRoute(Person target) {
         LinkedList<Person> path = new LinkedList<Person>()
         Person step = target
