@@ -22,10 +22,13 @@ class Shipping {
         if (hard == null || !aPackage) {
             return null
         }
+        if (hard == Integer.MAX_VALUE) {
+            return Double.MAX_VALUE as BigDecimal
+        }
 
         BigDecimal shippingCost = Math.sqrt(hard.abs()) * calculateNormalizedWeight(aPackage)
 
-        return shippingCost.setScale(2, BigDecimal.ROUND_DOWN)
+        return shippingCost.setScale(2, BigDecimal.ROUND_HALF_UP)
 
     }
 }
