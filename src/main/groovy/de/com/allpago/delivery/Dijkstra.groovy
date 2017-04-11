@@ -24,62 +24,14 @@ class Dijkstra {
         people.forEach { smallestHards.put(it, Integer.MAX_VALUE) }
         smallestHards.put(source, 0)
 
-        findMinimalHard(source)
+        updateSmallestHards(source)
 
         while (unSettledPeople.size() > 0) {
-            Person person = getPersonWithMinimumHard(unSettledPeople)
+            Person person = getPersonWithSmallestHard(unSettledPeople)
             settledPeople.add(person)
             unSettledPeople.remove(person)
-            findMinimalHard(person)
+            updateSmallestHards(person)
         }
-    }
-
-    private void findMinimalHard(Person person) {
-        List<Person> adjacentPeople = getNeighbors(person)
-
-        adjacentPeople.findAll {
-            smallestHards.get(it) > (smallestHards.get(person) + getRouteHard(person, it))
-        }.forEach { Person target ->
-                smallestHards.put(target, smallestHards.get(person) + getRouteHard(person, target))
-                predecessors.put(target, person)
-                unSettledPeople.add(target)
-        }
-
-    }
-
-    private int getRouteHard(Person person, Person target) {
-        return routes.find { it.source == person && it.destination == target}?.hard
-
-    }
-
-    private List<Person> getNeighbors(Person person) {
-        List<Person> neighbors = new ArrayList<Person>()
-
-        routes.findAll {
-            it.source == person && !isSettled(it.destination)
-        }.forEach {
-            neighbors.add(it.destination)
-        }
-
-        return neighbors
-    }
-
-    private Person getPersonWithMinimumHard(Set<Person> people) {
-        Person minimum = null
-        people.forEach { Person person ->
-            if (!minimum) {
-                minimum = person
-            } else {
-                if (smallestHards.get(person) < smallestHards.get(minimum)) {
-                    minimum = person
-                }
-            }
-        }
-        return minimum
-    }
-
-    private boolean isSettled(Person Person) {
-        return settledPeople.contains(Person)
     }
 
     public Integer getBestRoutesHard(Person target) {
@@ -102,6 +54,54 @@ class Dijkstra {
 
         Collections.reverse(path)
         return path
+    }
+
+    private void updateSmallestHards(Person origin) {
+        List<Person> adjacentPeople = getNeighbors(origin)
+
+        adjacentPeople.findAll {
+            getBestRoutesHard(it) > (getBestRoutesHard(origin) + getRouteHard(origin, it))
+        }.forEach { Person target ->
+                smallestHards.put(target, getBestRoutesHard(origin) + getRouteHard(origin, target))
+                predecessors.put(target, origin)
+                unSettledPeople.add(target)
+        }
+
+    }
+
+    private int getRouteHard(Person origin, Person target) {
+        return routes.find { it.source == origin && it.destination == target}?.hard
+
+    }
+
+    private List<Person> getNeighbors(Person person) {
+        List<Person> neighbors = new ArrayList<Person>()
+
+        routes.findAll {
+            it.source == person && !isSettled(it.destination)
+        }.forEach {
+            neighbors.add(it.destination)
+        }
+
+        return neighbors
+    }
+
+    private Person getPersonWithSmallestHard(Set<Person> people) {
+        Person minimum = null
+        people.forEach { Person person ->
+            if (!minimum) {
+                minimum = person
+            } else {
+                if (getBestRoutesHard(person) < getBestRoutesHard(minimum)) {
+                    minimum = person
+                }
+            }
+        }
+        return minimum
+    }
+
+    private boolean isSettled(Person Person) {
+        return settledPeople.contains(Person)
     }
 
 }

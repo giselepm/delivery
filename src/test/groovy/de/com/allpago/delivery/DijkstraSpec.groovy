@@ -117,7 +117,7 @@ class DijkstraSpec extends Specification {
         dijkstra.execute(me)
 
         expect:
-        Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(philipp), 0.4, 26, 10, 11) == 4.12
+        Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(philipp), new Package(0.4, 26, 10, 11)) == 4.12
     }
 
 }
