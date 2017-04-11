@@ -1,122 +1,92 @@
 package de.com.allpago.delivery
 
+import com.opencsv.CSVReader
 import spock.lang.Specification
+import spock.lang.Unroll
 
+@Unroll
 class AcceptanceTests extends Specification {
-    static List<Person> people
-    static List<Route> routes
-    static Person me
-    static Person stefan
-    static Person amir
-    static Person martin
-    static Person adam
-    static Person philipp
-    static Person diana
 
-
-    void setup() {
-        me = new Person("me")
-        stefan = new Person("Stefan")
-        amir = new Person("Amir")
-        martin = new Person("Martin")
-        adam = new Person("Adam")
-        philipp = new Person("Philipp")
-        diana = new Person("Diana")
-
-        people = [me, stefan, amir, martin, adam, philipp, diana]
-
-        routes = [new Route(me, stefan, 100),
-                  new Route(me, amir, 1042),
-                  new Route(me, martin, 595),
-                  new Route(me, adam, 10),
-                  new Route(me, philipp, 128),
-                  new Route(stefan, amir, 850),
-                  new Route(stefan, adam, 85),
-                  new Route(adam, philipp, 7),
-                  new Route(adam, martin, 400),
-                  new Route(diana, amir, 57),
-                  new Route(diana, martin, 3)]
-
-    }
-
-    def "When there is no routes from me, there is no path to any person"() {
+    def "testing scenarios in file #scenario.fileName"() {
         given:
-        Graph graph = new Graph(people, [])
+        Graph graph = scenario.graph
 
         and:
         Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        dijkstra.execute(Person.getAndAddPerson("ME", graph.people))
 
         and:
-        Person destination = people.get(new Random().nextInt(people.size() - 2) +1) // To get a random destination person that's not me
-
-        when:
-        LinkedList<Person> path = dijkstra.getBestRoute(destination)
-
-        then:
-        !path
-
-    }
-
-    def "When there is only one route from me to Philipp, that's the best route"() {
-        given:
-
-        List<Route> routes = [new Route(me, philipp, 100)]
-
-        and:
-        Graph graph = new Graph(people, routes)
-
-        and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
-
-        when:
-        LinkedList<Person> path = dijkstra.getBestRoute(philipp)
-
-        then:
-        path == [me, philipp]
-    }
-
-    def "When there is two routes from me to Philipp, the smallest route should be chosen"() {
-        given:
-        Graph graph = new Graph(people, routes)
-
-        and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
-
-        when:
-        LinkedList<Person> path = dijkstra.getBestRoute(philipp)
-
-        then:
-        path == [me, adam, philipp]
-    }
-
-    def "When there is two routes from me to Amir, the smallest route should be chosen"() {
-        given:
-        Graph graph = new Graph(people, routes)
-
-        and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
-
-        when:
-        LinkedList<Person> path = dijkstra.getBestRoute(amir)
-
-        then:
-        path == [me, stefan, amir]
-    }
-
-    def "When the best route from me to Phillip is through adam and the package width=26cm, length=10cm, height=11cm and weight = 0.4Kg, the shipping cost should be 4.12 EUR"() {
-        given:
-        Graph graph = new Graph(people, routes)
-
-        and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        List testCases = scenario.testCases
 
         expect:
-        Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(philipp), 0.4, 26, 10, 11) == 4.12
+        testCases.forEach { Map testCase ->
+            assert Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(testCase.person), testCase.package) == testCase.cost
+        }
+
+        where:
+        scenario << getCSVFiles().collect { loadScenario(it) }
+
+    }
+
+
+    private List<File> getCSVFiles() {
+        File directory = new File("csvs")
+
+        return directory.listFiles().findAll { it.isFile() && it.getName().endsWith('.csv') }
+
+    }
+
+    private Map loadScenario(File csv) {
+
+        CSVReader reader = new CSVReader(new FileReader(csv))
+        List<String> lines = reader.readAll()
+        Graph graph = generateGraph(lines.findAll { it[0] != "@" })
+
+        return [fileName : csv.name,
+                graph    : graph,
+                testCases: generateTestCases(lines.findAll { it[0] == "@" }, graph.people)]
+    }
+
+    private Graph generateGraph(List csvRouteLines) {
+        List<Person> people = []
+        List<Route> routes = []
+
+        csvRouteLines.forEach { line ->
+            List routeParts = (List) line
+            Person origin = Person.getAndAddPerson(routeParts.remove(0), people)
+
+            routeParts.forEach {
+                String it ->
+                    routes.add(new Route(origin, Person.getAndAddPerson(it.split(':').first(), people), it.split(':').last().toInteger()))
+            }
+        }
+
+        return new Graph(people, routes)
+
+    }
+
+    private List generateTestCases(List csvLines, List people) {
+        List testCases = []
+
+        csvLines.forEach { line ->
+            List testCaseParts = (List) line
+
+            List dimensions = testCaseParts.get(2).split('x')
+            Package aPackage = new Package((dimensions.get(3) as Integer) / 1000, dimensions.get(0) as BigDecimal,
+                    dimensions.get(1) as BigDecimal, dimensions.get(2) as BigDecimal)
+
+            String costAsString = testCaseParts.get(3)
+            BigDecimal cost = (costAsString == "~" ? Double.MAX_VALUE : costAsString) as BigDecimal
+
+            testCases.add(
+                    [person : Person.getAndAddPerson(testCaseParts.get(1), people),
+                     package: aPackage,
+                     cost   : cost])
+
+        }
+
+        return testCases
+
     }
 
 }
