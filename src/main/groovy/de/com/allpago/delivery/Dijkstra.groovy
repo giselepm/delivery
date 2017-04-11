@@ -82,6 +82,10 @@ class Dijkstra {
         return settledPeople.contains(Person)
     }
 
+    public Integer getBestRoutesHard(Person target) {
+        return smallestHards.get(target)
+    }
+
     public LinkedList<Person> getBestRoute(Person target) {
         LinkedList<Person> path = new LinkedList<Person>()
         Person step = target

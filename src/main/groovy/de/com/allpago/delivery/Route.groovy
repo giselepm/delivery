@@ -3,7 +3,7 @@ package de.com.allpago.delivery
 class Route {
     private Person source
     private Person destination
-    private int hard
+    private Integer hard
 
     Route(Person source, Person destination, int hard) {
         this.source = source

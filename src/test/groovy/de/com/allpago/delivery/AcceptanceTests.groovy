@@ -39,7 +39,7 @@ class AcceptanceTests extends Specification {
 
     }
 
-    def "When there is no routes from me there is no path to any person"() {
+    def "When there is no routes from me, there is no path to any person"() {
         given:
         Graph graph = new Graph(people, [])
 
@@ -58,7 +58,7 @@ class AcceptanceTests extends Specification {
 
     }
 
-    def "When there is only one route from me to Philipp that's the best route"() {
+    def "When there is only one route from me to Philipp, that's the best route"() {
         given:
 
         List<Route> routes = [new Route(me, philipp, 100)]
@@ -77,7 +77,7 @@ class AcceptanceTests extends Specification {
         path == [me, philipp]
     }
 
-    def "When there is two routes from me to Philipp the smallest route should be chosen"() {
+    def "When there is two routes from me to Philipp, the smallest route should be chosen"() {
         given:
         Graph graph = new Graph(people, routes)
 
@@ -92,8 +92,7 @@ class AcceptanceTests extends Specification {
         path == [me, adam, philipp]
     }
 
-
-    def "When there is two routes from me to Amir the smallest route should be chosen"() {
+    def "When there is two routes from me to Amir, the smallest route should be chosen"() {
         given:
         Graph graph = new Graph(people, routes)
 
@@ -106,6 +105,18 @@ class AcceptanceTests extends Specification {
 
         then:
         path == [me, stefan, amir]
+    }
+
+    def "When the best route from me to Phillip is through adam and the package width=26cm, length=10cm, height=11cm and weight = 0.4Kg, the shipping cost should be 4.12 EUR"() {
+        given:
+        Graph graph = new Graph(people, routes)
+
+        and:
+        Dijkstra dijkstra = new Dijkstra(graph)
+        dijkstra.execute(me)
+
+        expect:
+        Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(philipp), 0.4, 26, 10, 11) == 4.12
     }
 
 }
