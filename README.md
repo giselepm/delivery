@@ -29,7 +29,7 @@ productive with it. Besides, using gradle you don't need anything but Java insta
 ## REFERENCES
 
 As Dijkstra is a well known algorithm and there are a lot of solutions in the internet, instead of starting from 
-scratch, I've used the code in this[page](http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html)as my 
+scratch, I've used the code in this [page](http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html) as my 
 starting point and adapted it for the delivery problem.
 
 ## ASSUMPTIONS
@@ -43,19 +43,23 @@ subfolders will be executed.
 
 ## DESIGN
 
-* **BestRouteCalculator**class is responsible for generating all the best routes from a defined origin and for 
+* **BestRouteCalculator** class is responsible for generating all the best routes from a defined origin and for 
 retrieving the hard to a specific Person.
-* **ShippingCalculator**class is responsible for calculating the shipping cost of a package based in a provided hard 
+* **ShippingCalculator** class is responsible for calculating the shipping cost of a package based in a provided hard 
 and the package's measures.
-* **Graph**class keeps the all people and routes information.
-* **Person**class keeps a person info, in the case, just its name.
-* **Route**class keeps the the source and destination of a route plus its hard to transport the package
-* **Package**class has all info about a package, including its weight, height, width and length.
+* **Graph** class keeps the all people and routes information.
+* **Person** class keeps a person info, in the case, just its name.
+* **Route** class keeps the the source and destination of a route plus its hard to transport the package
+* **Package** class has all info about a package, including its weight, height, width and length.
 
 ## THANK YOU
 
 Regardless of succeeding or failing this recruiting process, I just wanted to thank you for the opportunity. I had a lot 
 of fun working on this challenge. I hope I succeed, though :)
+
+
+
+
 
 
 ## Problem Description
