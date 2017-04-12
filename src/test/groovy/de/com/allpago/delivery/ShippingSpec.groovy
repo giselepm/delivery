@@ -1,5 +1,6 @@
 package de.com.allpago.delivery
 
+import de.com.allpago.delivery.domain.Package
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -8,7 +9,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm and height=#height cm, its volumetric weight should be #weight kg"() {
         expect:
-        Shipping.calculateVolumetricWeight(new Package(0, width, lenght, height)) == weight
+        ShippingCalculator.calculateVolumetricWeight(new Package(0, width, lenght, height)) == weight
 
         where:
         width | lenght | height | weight
@@ -21,7 +22,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm, height=#height cm and weight = #weight kg, its normalized weight should be #normalizedWeight kg"() {
         expect:
-        Shipping.calculateNormalizedWeight(new Package(weight, width, lenght, height)) == normalizedWeight
+        ShippingCalculator.calculateNormalizedWeight(new Package(weight, width, lenght, height)) == normalizedWeight
 
         where:
         width | lenght | height | weight | normalizedWeight
@@ -32,7 +33,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm, height=#height cm and weight = #weight kg and its hard to a friend is #hard, its shipping cost should be #cost EUR"() {
         expect:
-        Shipping.calculateShippingCost(hard, new Package(weight, width, lenght, height)) == cost
+        ShippingCalculator.calculateShippingCost(hard, new Package(weight, width, lenght, height)) == cost
 
         where:
         width | lenght | height | weight | hard | cost

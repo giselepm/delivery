@@ -1,4 +1,4 @@
-package de.com.allpago.delivery
+package de.com.allpago.delivery.domain
 
 class Route {
     private Person source

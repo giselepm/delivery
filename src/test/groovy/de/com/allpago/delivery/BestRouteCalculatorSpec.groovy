@@ -1,8 +1,12 @@
 package de.com.allpago.delivery
 
+import de.com.allpago.delivery.domain.Graph
+import de.com.allpago.delivery.domain.Package
+import de.com.allpago.delivery.domain.Person
+import de.com.allpago.delivery.domain.Route
 import spock.lang.Specification
 
-class DijkstraSpec extends Specification {
+class BestRouteCalculatorSpec extends Specification {
 
     static List<Person> people
     static List<Route> routes
@@ -45,11 +49,11 @@ class DijkstraSpec extends Specification {
         Graph graph = new Graph(people, [])
 
         and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        BestRouteCalculator dijkstra = new BestRouteCalculator(graph)
+        dijkstra.calculateBestRoutes(me)
 
         and:
-        Person destination = people.get(new Random().nextInt(people.size() - 2) +1) // To get a random destination person that's not me
+        Person destination = people.get(new Random().nextInt(people.size() - 2) + 1) // To get a random destination person that's not me
 
         when:
         LinkedList<Person> path = dijkstra.getBestRoute(destination)
@@ -68,8 +72,8 @@ class DijkstraSpec extends Specification {
         Graph graph = new Graph(people, routes)
 
         and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        BestRouteCalculator dijkstra = new BestRouteCalculator(graph)
+        dijkstra.calculateBestRoutes(me)
 
         when:
         LinkedList<Person> path = dijkstra.getBestRoute(philipp)
@@ -83,8 +87,8 @@ class DijkstraSpec extends Specification {
         Graph graph = new Graph(people, routes)
 
         and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        BestRouteCalculator dijkstra = new BestRouteCalculator(graph)
+        dijkstra.calculateBestRoutes(me)
 
         when:
         LinkedList<Person> path = dijkstra.getBestRoute(philipp)
@@ -98,8 +102,8 @@ class DijkstraSpec extends Specification {
         Graph graph = new Graph(people, routes)
 
         and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        BestRouteCalculator dijkstra = new BestRouteCalculator(graph)
+        dijkstra.calculateBestRoutes(me)
 
         when:
         LinkedList<Person> path = dijkstra.getBestRoute(amir)
@@ -113,11 +117,11 @@ class DijkstraSpec extends Specification {
         Graph graph = new Graph(people, routes)
 
         and:
-        Dijkstra dijkstra = new Dijkstra(graph)
-        dijkstra.execute(me)
+        BestRouteCalculator dijkstra = new BestRouteCalculator(graph)
+        dijkstra.calculateBestRoutes(me)
 
         expect:
-        Shipping.calculateShippingCost(dijkstra.getBestRoutesHard(philipp), new Package(0.4, 26, 10, 11)) == 4.12
+        ShippingCalculator.calculateShippingCost(dijkstra.getBestRouteHard(philipp), new Package(0.4, 26, 10, 11)) == 4.12
     }
 
 }

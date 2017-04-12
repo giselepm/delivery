@@ -1,4 +1,62 @@
-# Allpago Delivery Challenge
+# Allpago Package Delivery Challenge
+
+## BUILDING AND COMPILING PROJECT
+
+This solution uses [Gradle](https://gradle.org/) as build mechanism. It's shipped with an embedded Gradle installation, 
+hence, to run its tests, simply open a command shell and issue the line below at the root directory: 
+  
+    ./gradlew clean test
+
+Analogously, to build a package, use: 
+
+    ./gradlew jar
+
+
+## MY APPROACH TO THIS CHALLENGE
+
+
+My approach to this challenge was to solve the routing problem first as it is a well known problem (Dijkstra). Then I 
+continued solving the pricing problem and in the end, after having most of the code running and validated for small 
+scenarios, I've created the acceptance tests consuming the csv files. And during all the process, I've refactored every 
+time I felt something could be clearer or simpler.
+
+I've tried to keep the code as simpler as possible using small classes, significant classes, method and attribute names 
+and methods with only one responsibility.  
+
+Also I've decided to use groovy because I've been coding mainly on it for the last 2 years and hence I fill more 
+productive with it. Besides, using gradle you don't need anything but Java installed to run it.
+
+## REFERENCES
+
+As Dijkstra is a well known algorithm and there are a lot of solutions in the internet, instead of starting from 
+scratch, I've used the code in this[page](http://www.vogella.com/tutorials/JavaAlgorithmsDijkstra/article.html)as my 
+starting point and adapted it for the delivery problem.
+
+## ASSUMPTIONS
+
+* It's not necessary to provide a way for the user to interact with it via a command-line interface of any kind of user 
+interface. The challenge is about implementing methods to solve the problem and test cases to run the csv scenarios.
+* Only .csv files in the root csvs folder will be executed. No other file extension in this folder or any file in 
+subfolders will be executed.
+* If a negative number is sent in the package's measures, its absolute value will be considered.
+* Same names with different letter cases are considered equals, i.e. Me, ME and me are considered the same person.
+
+## DESIGN
+
+* **BestRouteCalculator**class is responsible for generating all the best routes from a defined origin and for 
+retrieving the hard to a specific Person.
+* **ShippingCalculator**class is responsible for calculating the shipping cost of a package based in a provided hard 
+and the package's measures.
+* **Graph**class keeps the all people and routes information.
+* **Person**class keeps a person info, in the case, just its name.
+* **Route**class keeps the the source and destination of a route plus its hard to transport the package
+* **Package**class has all info about a package, including its weight, height, width and length.
+
+## THANK YOU
+
+Regardless of succeeding or failing this recruiting process, I just wanted to thank you for the opportunity. I had a lot 
+of fun working on this challenge. I hope I succeed, though :)
+
 
 ## Problem Description
 -----------
@@ -120,13 +178,3 @@ that directory. In few sentences describe your design; in particular, tell us ab
 algorithm. You are free to use any library that may help your task. You can even re-use Java 
 code from the Internet if you find it useful, as long as you cite the source and explain why 
 you used it.
-
-## BUILDING PROJECT
-This solution uses [Gradle](https://gradle.org/) as build mechanism.
-
-Type:
-
-    ./gradlew clean test
-
-Downloaded files (including the Gradle distribution itself) will be stored in the Gradle user home directory (typically *user_home*`/.gradle`).
-

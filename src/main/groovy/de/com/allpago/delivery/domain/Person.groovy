@@ -1,4 +1,4 @@
-package de.com.allpago.delivery
+package de.com.allpago.delivery.domain
 
 class Person {
     private String name
@@ -8,7 +8,7 @@ class Person {
     }
 
     static Person getAndAddPerson(String name, List<Person> people) {
-        Person person = people.find { it.name == name }
+        Person person = people.find { it.name.toLowerCase() == name.toLowerCase() }
 
         if (!person) {
             person = new Person(name)

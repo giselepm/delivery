@@ -1,4 +1,4 @@
-package de.com.allpago.delivery
+package de.com.allpago.delivery.domain
 
 import spock.lang.Specification
 import spock.lang.Unroll

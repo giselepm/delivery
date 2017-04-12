@@ -1,6 +1,10 @@
 package de.com.allpago.delivery
 
-class Dijkstra {
+import de.com.allpago.delivery.domain.Graph
+import de.com.allpago.delivery.domain.Person
+import de.com.allpago.delivery.domain.Route
+
+class BestRouteCalculator {
 
     private final List<Person> people
     private final List<Route> routes
@@ -10,12 +14,12 @@ class Dijkstra {
     private Map<Person, Integer> smallestHards
 
 
-    Dijkstra(Graph graph) {
+    BestRouteCalculator(Graph graph) {
         this.people = new ArrayList<Person>(graph.people)
         this.routes = new ArrayList<Route>(graph.routes)
     }
 
-    public void execute(Person source) {
+    public void calculateBestRoutes(Person source) {
         settledPeople = []
         unSettledPeople = []
         smallestHards = [:]
@@ -34,7 +38,7 @@ class Dijkstra {
         }
     }
 
-    public Integer getBestRoutesHard(Person target) {
+    public Integer getBestRouteHard(Person target) {
         return smallestHards.get(target)
     }
 
@@ -60,17 +64,17 @@ class Dijkstra {
         List<Person> adjacentPeople = getNeighbors(origin)
 
         adjacentPeople.findAll {
-            getBestRoutesHard(it) > (getBestRoutesHard(origin) + getRouteHard(origin, it))
+            getBestRouteHard(it) > (getBestRouteHard(origin) + getRouteHard(origin, it))
         }.forEach { Person target ->
-                smallestHards.put(target, getBestRoutesHard(origin) + getRouteHard(origin, target))
-                predecessors.put(target, origin)
-                unSettledPeople.add(target)
+            smallestHards.put(target, getBestRouteHard(origin) + getRouteHard(origin, target))
+            predecessors.put(target, origin)
+            unSettledPeople.add(target)
         }
 
     }
 
     private int getRouteHard(Person origin, Person target) {
-        return routes.find { it.source == origin && it.destination == target}?.hard
+        return routes.find { it.source == origin && it.destination == target }?.hard
 
     }
 
@@ -92,7 +96,7 @@ class Dijkstra {
             if (!minimum) {
                 minimum = person
             } else {
-                if (getBestRoutesHard(person) < getBestRoutesHard(minimum)) {
+                if (getBestRouteHard(person) < getBestRouteHard(minimum)) {
                     minimum = person
                 }
             }
