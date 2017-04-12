@@ -32,7 +32,7 @@ class AcceptanceTests extends Specification {
 
         expect:
         testCases.forEach { Map testCase ->
-            assert ShippingCalculator.calculateShippingCost(dijkstra.getBestRouteHard(testCase.person), testCase.package) == testCase.cost
+            assert ShippingCostCalculator.calculateShippingCost(dijkstra.getBestRouteHard(testCase.person), testCase.package) == testCase.cost
         }
 
         where:

@@ -4,7 +4,7 @@ import de.com.allpago.delivery.domain.Package
 
 import java.math.RoundingMode
 
-class ShippingCalculator {
+class ShippingCostCalculator {
 
     private static final BigDecimal ROUND_FACTOR = 0.5
 

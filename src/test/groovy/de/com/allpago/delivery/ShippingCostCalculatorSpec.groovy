@@ -9,7 +9,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm and height=#height cm, its volumetric weight should be #weight kg"() {
         expect:
-        ShippingCalculator.calculateVolumetricWeight(new Package(0, width, lenght, height)) == weight
+        ShippingCostCalculator.calculateVolumetricWeight(new Package(0, width, lenght, height)) == weight
 
         where:
         width | lenght | height | weight
@@ -22,7 +22,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm, height=#height cm and weight = #weight kg, its normalized weight should be #normalizedWeight kg"() {
         expect:
-        ShippingCalculator.calculateNormalizedWeight(new Package(weight, width, lenght, height)) == normalizedWeight
+        ShippingCostCalculator.calculateNormalizedWeight(new Package(weight, width, lenght, height)) == normalizedWeight
 
         where:
         width | lenght | height | weight | normalizedWeight
@@ -33,7 +33,7 @@ class ShippingSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm, height=#height cm and weight = #weight kg and its hard to a friend is #hard, its shipping cost should be #cost EUR"() {
         expect:
-        ShippingCalculator.calculateShippingCost(hard, new Package(weight, width, lenght, height)) == cost
+        ShippingCostCalculator.calculateShippingCost(hard, new Package(weight, width, lenght, height)) == cost
 
         where:
         width | lenght | height | weight | hard | cost

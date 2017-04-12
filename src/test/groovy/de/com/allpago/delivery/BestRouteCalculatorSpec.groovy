@@ -121,7 +121,7 @@ class BestRouteCalculatorSpec extends Specification {
         dijkstra.calculateBestRoutes(me)
 
         expect:
-        ShippingCalculator.calculateShippingCost(dijkstra.getBestRouteHard(philipp), new Package(0.4, 26, 10, 11)) == 4.12
+        ShippingCostCalculator.calculateShippingCost(dijkstra.getBestRouteHard(philipp), new Package(0.4, 26, 10, 11)) == 4.12
     }
 
 }
