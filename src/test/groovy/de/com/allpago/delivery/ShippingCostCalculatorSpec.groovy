@@ -5,7 +5,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class ShippingSpec extends Specification {
+class ShippingCostCalculatorSpec extends Specification {
 
     def "when a package has width=#width cm, length=#lenght cm and height=#height cm, its volumetric weight should be #weight kg"() {
         expect:

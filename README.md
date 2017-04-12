@@ -23,8 +23,8 @@ time I felt something could be clearer or simpler.
 I've tried to keep the code as simpler as possible using small classes, significant classes, method and attribute names 
 and methods with only one responsibility.  
 
-Also I've decided to use groovy because I've been coding mainly on it for the last 2 years and hence I fill more 
-productive with it. Besides, using gradle you don't need anything but Java installed to run it.
+Also I've decided to use Groovy because I've been coding mainly on it for the last 2 years and hence I fill more 
+productive with it. Besides, using Gradle you don't need anything but Java installed to run it.
 
 ## REFERENCES
 
@@ -45,7 +45,7 @@ subfolders will be executed.
 
 * **BestRouteCalculator** class is responsible for generating all the best routes from a defined origin and for 
 retrieving the hard to a specific Person.
-* **ShippingCalculator** class is responsible for calculating the shipping cost of a package based in a provided hard 
+* **ShippingCostCalculator** class is responsible for calculating the shipping cost of a package based in a provided hard 
 and the package's measures.
 * **Graph** class keeps the all people and routes information.
 * **Person** class keeps a person info, in the case, just its name.
